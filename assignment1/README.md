@@ -16,7 +16,7 @@ The Wisconsin breast cancer dataset is included in scikit-learn and was loaded f
 dataset can be found here: https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Diagnostic%29.
 
 ##Execution##
-`python [algorithm].py`
+`$ python [algorithm].py`
 e.g. `python dt.py` for decision tree
 
 ##Folder Structure and File Description##
