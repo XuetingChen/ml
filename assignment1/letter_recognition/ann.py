@@ -6,7 +6,6 @@ from pybrain.utilities           import percentError
 from pybrain.tools.shortcuts     import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.structure.modules   import SoftmaxLayer
-from pybrain.structure.modules   import SigmoidLayer
 
 def encode_target(df, target_column):
     """Add column to df with integers for the target.

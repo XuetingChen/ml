@@ -1,53 +1,50 @@
+"""
+Plots Model Complexity graphs for Decision Trees
+For Decision Trees we vary complexity by changing the size of the decision tree
+"""
 from sklearn.cross_validation import cross_val_score
-from sklearn import tree, datasets
 from numpy import *
-import pylab as pl
+from sklearn.tree import DecisionTreeClassifier
+from sklearn import datasets
+from time import time
 
-if __name__ == "__main__":
-    breast_cancer = datasets.load_breast_cancer()
 
-    print (breast_cancer.data)
-    print (breast_cancer.target)
+breast_cancer = datasets.load_breast_cancer()
 
-    offset = int(0.6*len(breast_cancer.data))
-    X_train = breast_cancer.data[:offset]
-    Y_train = breast_cancer.target[:offset]
-    X_test = breast_cancer.data[offset:]
-    Y_test = breast_cancer.target[offset:]
+offset = int(0.6*len(breast_cancer.data))
+X_train = breast_cancer.data[:offset]
+Y_train = breast_cancer.target[:offset]
+X_test = breast_cancer.data[offset:]
+Y_test = breast_cancer.target[offset:]
 
-    # We will vary the depth of decision trees from 2 to 50
-    max_depth = arange(2, 50)
-    train_err = zeros(len(max_depth))
-    test_err = zeros(len(max_depth))
-    cross_val_scores = zeros(len(max_depth))
+# Setup a Decision Tree Classifier so that it learns a tree with depth d
+classifier = DecisionTreeClassifier(max_depth=10, min_samples_split=2, max_leaf_nodes=15, criterion='entropy', min_samples_leaf=1)
 
-    for i, d in enumerate(max_depth):
-        print "Decision tree with depth: %d" % d
-        # Setup a Decision Tree Classifier so that it learns a tree with depth d
-        classifier = tree.DecisionTreeClassifier(max_depth=d, min_samples_split=2, max_leaf_nodes=15, criterion='entropy', min_samples_leaf=1)
+start = time()
+# Fit the learner to the training data
+classifier.fit(X_train, Y_train)
+end = time()
+print(("\nLearner took {:.4f} ").format(end - start))
 
-        # Fit the learner to the training data
-        classifier.fit(X_train, Y_train)
 
-        # Find the error rate on the training set
-        train_err[i] = 1 - classifier.score(X_train, Y_train)
+# Find the MSE on the training set
+start = time()
+train_err = 1 - classifier.score(X_train, Y_train)
+end = time()
+print(("\nTraining took {:.4f} ").format(end - start))
 
-        # Find the error rate on the testing set
-        test_err[i] = 1 - classifier.score(X_test, Y_test)
+start = time()
+test_err = 1 - classifier.score(X_test, Y_test)
+end = time()
+print(("\nTesting took {:.4f} ").format(end - start))
 
-        scores = cross_val_score(classifier, X_train, Y_train, cv=10)
-        cross_val_scores[i] = 1 - scores.mean()
 
-    # Plot training and test error as a function of the depth of the decision tree learnt
-    pl.figure()
-    pl.title('Breast Cancer Decision Trees: Error Rate vs Max Depth')
-    pl.plot(max_depth, test_err, lw=2, label = 'test error')
-    pl.plot(max_depth, train_err, lw=2, label = 'training error')
-    pl.plot(max_depth, cross_val_scores, lw=2, label = 'cross validation error')
-    pl.legend(loc=0)
-    pl.xlabel('Max Depth')
-    pl.ylabel('Error Rate')
-    pl.grid()
-    pl.show()
+print "Train err: {:.2f}", train_err
+print "Train acc: {:.2f}", 1-train_err
+print "Test err:  {:.2f}", test_err
+print "Test acc:  {:.2f}", 1-test_err
 
+cross_val_err = 1 - cross_val_score(classifier, X_train, Y_train)
+
+print "Cross val err: {:.4f}", cross_val_err.mean()
 

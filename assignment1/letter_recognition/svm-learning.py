@@ -9,7 +9,7 @@ if __name__ == "__main__":
     # dft = df
     dft, mapping = util.encode_target(df, "letter")
 
-    offsets = arange(1,9)
+    offsets = arange(1,10)
     train_err = zeros(len(offsets))
     test_err = zeros(len(offsets))
     cross_val_scores = zeros(len(offsets))
@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     # Plot training and test error as a function of the depth of the decision tree learnt
     pl.figure()
-    pl.title('Letter Recognition Decision Trees: Error Rate vs Training Set Size')
+    pl.title('Letter Recognition RBF SVM: Error Rate vs Training Set Size')
     pl.plot(offsets, test_err, lw=2, label = 'test error')
     pl.plot(offsets, train_err, lw=2, label = 'training error')
     pl.plot(offsets, cross_val_scores, lw=2, label = 'cross validation error')
