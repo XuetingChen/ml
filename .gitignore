@@ -1,5 +1,7 @@
 # User-specific stuff:
 *.idea/*
+.iml
+.DS_STORE
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/dictionaries
@@ -10,7 +12,7 @@ assignment1/.idea/*
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
-
+.gitignore
 # Gradle:
 .idea/gradle.xml
 .idea/libraries
