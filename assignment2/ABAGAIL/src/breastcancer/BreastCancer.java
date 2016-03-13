@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -27,13 +28,15 @@ import java.util.Scanner;
  */
 public class BreastCancer {
     private static Instance[] instances = initializeInstances();
+    private static Instance[] train_set = Arrays.copyOfRange(instances, 0, 341);
+    private static Instance[] test_set = Arrays.copyOfRange(instances, 341, 568);
 
-    private static int inputLayer = 30, hiddenLayer = 15, outputLayer = 1, trainingIterations = 600;
+    private static DataSet set = new DataSet(train_set);
+
+    private static int inputLayer = 30, hiddenLayer=15, outputLayer = 1, trainingIterations = 1000;
     private static BackPropagationNetworkFactory factory = new BackPropagationNetworkFactory();
 
     private static ErrorMeasure measure = new SumOfSquaresError();
-
-    private static DataSet set = new DataSet(instances);
 
     private static BackPropagationNetwork networks[] = new BackPropagationNetwork[3];
     private static NeuralNetworkOptimizationProblem[] nnop = new NeuralNetworkOptimizationProblem[3];
@@ -65,13 +68,14 @@ public class BreastCancer {
             Instance optimalInstance = oa[i].getOptimal();
             networks[i].setWeights(optimalInstance.getData());
 
+            // Calculate Training Set Statistics //
             double predicted, actual;
             start = System.nanoTime();
-            for(int j = 0; j < instances.length; j++) {
-                networks[i].setInputValues(instances[j].getData());
+            for(int j = 0; j < train_set.length; j++) {
+                networks[i].setInputValues(train_set[j].getData());
                 networks[i].run();
 
-                predicted = Double.parseDouble(instances[j].getLabel().toString());
+                predicted = Double.parseDouble(train_set[j].getLabel().toString());
                 actual = Double.parseDouble(networks[i].getOutputValues().toString());
 
                 double trash = Math.abs(predicted - actual) < 0.5 ? correct++ : incorrect++;
@@ -81,10 +85,31 @@ public class BreastCancer {
             testingTime = end - start;
             testingTime /= Math.pow(10,9);
 
-            results +=  "\nResults for " + oaNames[i] + ": \nCorrectly classified " + correct + " instances." +
+            results +=  "\nTrain Results for " + oaNames[i] + ": \nCorrectly classified " + correct + " instances." +
                         "\nIncorrectly classified " + incorrect + " instances.\nPercent correctly classified: "
                         + df.format(correct/(correct+incorrect)*100) + "%\nTraining time: " + df.format(trainingTime)
                         + " seconds\nTesting time: " + df.format(testingTime) + " seconds\n";
+
+            // Calculate Test Set Statistics //
+            start = System.nanoTime();
+            correct = 0; incorrect = 0;
+            for(int j = 0; j < test_set.length; j++) {
+                networks[i].setInputValues(test_set[j].getData());
+                networks[i].run();
+
+                predicted = Double.parseDouble(test_set[j].getLabel().toString());
+                actual = Double.parseDouble(networks[i].getOutputValues().toString());
+
+                double trash = Math.abs(predicted - actual) < 0.5 ? correct++ : incorrect++;
+            }
+            end = System.nanoTime();
+            testingTime = end - start;
+            testingTime /= Math.pow(10,9);
+
+            results +=  "\nTest Results for " + oaNames[i] + ": \nCorrectly classified " + correct + " instances." +
+                    "\nIncorrectly classified " + incorrect + " instances.\nPercent correctly classified: "
+                    + df.format(correct/(correct+incorrect)*100) + "%\nTraining time: " + df.format(trainingTime)
+                    + " seconds\nTesting time: " + df.format(testingTime) + " seconds\n";
         }
 
         System.out.println(results);
@@ -96,17 +121,27 @@ public class BreastCancer {
         for(int i = 0; i < trainingIterations; i++) {
             oa.train();
 
-            double error = 0;
-            for(int j = 0; j < instances.length; j++) {
-                network.setInputValues(instances[j].getData());
+            double train_error = 0;
+            for(int j = 0; j < train_set.length; j++) {
+                network.setInputValues(train_set[j].getData());
                 network.run();
 
-                Instance output = instances[j].getLabel(), example = new Instance(network.getOutputValues());
+                Instance output = train_set[j].getLabel(), example = new Instance(network.getOutputValues());
                 example.setLabel(new Instance(Double.parseDouble(network.getOutputValues().toString())));
-                error += measure.value(output, example);
+                train_error += measure.value(output, example);
             }
 
-            System.out.println(df.format(error));
+            double test_error = 0;
+            for(int j = 0; j < test_set.length; j++) {
+                network.setInputValues(test_set[j].getData());
+                network.run();
+
+                Instance output = test_set[j].getLabel(), example = new Instance(network.getOutputValues());
+                example.setLabel(new Instance(Double.parseDouble(network.getOutputValues().toString())));
+                test_error += measure.value(output, example);
+            }
+
+            System.out.println(df.format(train_error)+","+df.format(test_error));
         }
     }
 
@@ -117,14 +152,16 @@ public class BreastCancer {
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File("./src/breastcancer/wdbc-clean.csv")));
 
+            //for each sample
             for(int i = 0; i < attributes.length; i++) {
                 Scanner scan = new Scanner(br.readLine());
                 scan.useDelimiter(",");
 
                 attributes[i] = new double[2][];
-                attributes[i][0] = new double[30]; // 30attributes
+                attributes[i][0] = new double[30]; // 30 attributes
                 attributes[i][1] = new double[1]; // classification
 
+                // read features
                 for(int j = 0; j < 30; j++)
                     attributes[i][0][j] = Double.parseDouble(scan.next());
 

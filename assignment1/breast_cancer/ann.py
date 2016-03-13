@@ -30,10 +30,10 @@ if __name__ == "__main__":
     max_epochs = 1000
 
     # List all the different networks we want to test
-    net=(buildNetwork(trndata.indim,16,trndata.outdim, hiddenclass=SigmoidLayer, outclass=SoftmaxLayer))
+    net=(buildNetwork(trndata.indim,15,trndata.outdim, hiddenclass=SigmoidLayer, outclass=SigmoidLayer))
 
     # Setup a trainer that will use backpropogation for training
-    trainer = BackpropTrainer(net, dataset=trndata, learningrate=0.001, verbose=True, weightdecay=0.01)
+    trainer = BackpropTrainer(net, dataset=trndata, learningrate=0.001, verbose=True, weightdecay=0.01, momentum=.05)
     train_errors = []
     test_errors = []
 
@@ -56,8 +56,3 @@ if __name__ == "__main__":
     pl.xlabel('epoch')
     pl.ylabel('Error Rate')
     pl.show()
-
-
-
-
-

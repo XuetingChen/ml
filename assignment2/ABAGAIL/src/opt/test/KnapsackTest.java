@@ -36,7 +36,7 @@ public class KnapsackTest {
     /** Random number generator */
     private static final Random random = new Random();
     /** The number of items */
-    private static final int NUM_ITEMS = 40;
+    private static final int NUM_ITEMS = 100;
     /** The number of copies each */
     private static final int COPIES_EACH = 4;
     /** The maximum weight for a single element */
@@ -76,7 +76,7 @@ public class KnapsackTest {
         fit.train();
         System.out.println(ef.value(rhc.getOptimal()));
         
-        SimulatedAnnealing sa = new SimulatedAnnealing(100, .95, hcp);
+        SimulatedAnnealing sa = new SimulatedAnnealing(100000, .5, hcp);
         fit = new FixedIterationTrainer(sa, 200000);
         fit.train();
         System.out.println(ef.value(sa.getOptimal()));

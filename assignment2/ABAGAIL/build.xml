@@ -1,4 +1,5 @@
-<!-- Build file for ABAGAIL (c) Andrew Guillory 2005 --><project default = "all">
+<!-- Build file for ABAGAIL (c) Andrew Guillory 2005 -->
+<project default = "all" basedir=".">
 
 	<target name="init">
 		<property name="jdocs.dir" value="docs"/>
@@ -12,13 +13,14 @@
 	</target>
 
 	<target name = "compile" depends="prepare">
+		<javac debug="true"
+			   debuglevel="lines,vars,source"
+			   includeAntRuntime="false"
+			   classpath="ABAGAIL.jar"
+			   srcdir= "src" destdir = "bin"/>
+
 		<mkdir dir="bin"/>
-
-		<javac srcdir= "src" destdir = "bin"/>
-
 	</target>
-
-
 
 	<target name = "jar" depends = "compile">
 
@@ -30,9 +32,7 @@
 
 	</target>
 
-
-
-	<target name="clean">
+	<target name="clean" depends="init">
 		<delete dir="${bin.dir}" />
 		<delete dir="${jdocs.dir}" />
 	</target>

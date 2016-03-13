@@ -56,12 +56,12 @@ public class TravelingSalesmanTest {
         GeneticAlgorithmProblem gap = new GenericGeneticAlgorithmProblem(ef, odd, mf, cf);
         
         RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);      
-        FixedIterationTrainer fit = new FixedIterationTrainer(rhc, 200000);
+        FixedIterationTrainer fit = new FixedIterationTrainer(rhc, 300000);
         fit.train();
         System.out.println(ef.value(rhc.getOptimal()));
         
         SimulatedAnnealing sa = new SimulatedAnnealing(1E12, .95, hcp);
-        fit = new FixedIterationTrainer(sa, 200000);
+        fit = new FixedIterationTrainer(sa, 300000);
         fit.train();
         System.out.println(ef.value(sa.getOptimal()));
         

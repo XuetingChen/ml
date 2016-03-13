@@ -33,7 +33,7 @@ import shared.FixedIterationTrainer;
  */
 public class CountOnesTest {
     /** The n value */
-    private static final int N = 80;
+    private static final int N = 100;
     
     public static void main(String[] args) {
         int[] ranges = new int[N];
@@ -54,12 +54,12 @@ public class CountOnesTest {
         System.out.println(ef.value(rhc.getOptimal()));
         
         SimulatedAnnealing sa = new SimulatedAnnealing(100, .95, hcp);
-        fit = new FixedIterationTrainer(sa, 200);
+        fit = new FixedIterationTrainer(sa, 1000);
         fit.train();
         System.out.println(ef.value(sa.getOptimal()));
         
         StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(20, 20, 0, gap);
-        fit = new FixedIterationTrainer(ga, 300);
+        fit = new FixedIterationTrainer(ga, 200);
         fit.train();
         System.out.println(ef.value(ga.getOptimal()));
         
