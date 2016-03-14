@@ -224,7 +224,7 @@ public class FourPeaksOptimizationTest {
         other_params.put("output_folder","Optimization_Results");
         int num_runs = 10;
 
-        String[] algorithms = {"SA"};
+        String[] algorithms = {"RHC", "SA", "GA"};
 
         //Four Peaks Test
         HashMap<String, Object> four_peaks_test_params = new HashMap<>();
