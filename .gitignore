@@ -6,6 +6,10 @@
 .idea/tasks.xml
 .idea/dictionaries
 assignment1/.idea/*
+assignment2/.idea/*
+assignment2/ABAGAIL/*.txt
+assignment3/.idea/*
+
 # Sensitive or high-churn files:
 .idea/dataSources.ids
 .idea/dataSources.xml
@@ -99,3 +103,29 @@ docs/_build/
 
 # PyBuilder
 target/
+
+assignment2/countones.numbers
+
+*.numbers
+
+untitled/.idea/encodings.xml
+
+untitled/.idea/misc.xml
+
+untitled/.idea/modules.xml
+
+untitled/.idea/.name
+
+assignment1/__init__.py
+
+assignment2/Optimization_Results/2016-03-12/optloop
+
+assignment2/Optimization_Results/2016-03-12/temp.txt
+
+assignment2/Optimization_Results/2016-03-13/countones_optloop.sh
+
+assignment2/Optimization_Results/2016-03-13/temp.txt
+
+assignment2/randomized-optimization.iml
+
+assignment3/figure_1.png
