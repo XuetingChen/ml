@@ -1,11 +1,7 @@
-import numpy as np
-from scipy.spatial.distance import cdist
-
-from sklearn import metrics
-from sklearn.cluster import KMeans
-
-import matplotlib.pyplot as plt
 import pandas as pd
+
+from clustertesters import KMeansTestCluster as kmtc
+
 
 def encode_target(df, target_column):
     """Add column to df with integers for the target.
@@ -34,26 +30,10 @@ if __name__ == "__main__":
     X = (dft.ix[:, 1:])
     y = dft.ix[:, 0]
 
-    clusters = range(1,40)
-    meandist=[]
-    scores=[]
+    tester = kmtc.KMeansTestCluster(X, y, clusters=range(1,40), plot=True, targetcluster=3)
+    tester.run()
 
 
-    for k in clusters:
-        model=KMeans(n_clusters=k)
-        model.fit(X)
-        clusassign = model.predict(X)
-        meandist.append(sum(np.min(cdist(X, model.cluster_centers_, 'euclidean'), axis=1))/ X.shape[0])
-        scores.append(model.score(X, y))
 
-    """
-    Plot average distance from observations from the cluster centroid
-    to use the Elbow Method to identify number of clusters to choose
-    """
 
-    plt.plot(clusters, scores)
-    plt.xlabel('Number of clusters')
-    plt.ylabel('Average distance')
-    plt.title('Selecting k with the Elbow Method')
-    plt.show()
 
