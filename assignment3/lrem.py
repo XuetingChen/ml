@@ -1,7 +1,7 @@
+
+from sklearn import  datasets, metrics
+from clustertesters import ExpectationMaximizationTestCluster as emtc
 import pandas as pd
-
-from clustertesters import KMeansTestCluster as kmtc
-
 
 def encode_target(df, target_column):
     """Add column to df with integers for the target.
@@ -30,10 +30,6 @@ if __name__ == "__main__":
     X = (dft.ix[:, 1:])
     y = dft.ix[:, 0]
 
-    tester = kmtc.KMeansTestCluster(X, y, clusters=range(1,40), plot=True, targetcluster=26, stats=True)
+    tester = emtc.ExpectationMaximizationTestCluster(X, y, clusters=range(1,40), plot=True, targetcluster=3, stats=True)
     tester.run()
-
-
-
-
 

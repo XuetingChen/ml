@@ -30,10 +30,12 @@ class KMeansTestCluster():
         for k in self.clusters:
             model = KMeans(n_clusters=k, max_iter=5000, init='random')
             labels = model.fit_predict(self.X)
+
             if k == self.targetcluster and self.stats:
                 nd_data = np.concatenate((self.X, np.expand_dims(labels, axis=1),np.expand_dims(self.y, axis=1)), axis=1)
                 pd_data = pd.DataFrame(nd_data)
                 pd_data.to_csv("cluster.csv", index=False, index_label=False, header=False)
+                print model.cluster_centers_
 
                 for i in range (0,3):
                     print "Cluster {}".format(i)

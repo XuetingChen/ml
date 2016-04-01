@@ -25,9 +25,11 @@ class ExpectationMaximizationTestCluster():
         completeness_scores=[]
         rand_scores=[]
         silhouettes=[]
+        bic=[]
+        aic=[]
 
         for k in self.clusters:
-            model = mixture.GMM(n_components=k)
+            model = mixture.GMM(n_components=k, covariance_type='full')
             labels = model.fit_predict(self.X)
             if k == self.targetcluster and self.stats:
                 nd_data = np.concatenate((self.X, np.expand_dims(labels, axis=1),np.expand_dims(self.y, axis=1)), axis=1)
@@ -46,13 +48,14 @@ class ExpectationMaximizationTestCluster():
             homogeneity_scores.append(metrics.homogeneity_score(self.y, labels))
             completeness_scores.append(metrics.completeness_score(self.y, labels))
             rand_scores.append(metrics.adjusted_rand_score(self.y, labels))
-            
+            bic.append(model.bic(self.X))
+            aic.append(model.aic(self.X))
             #silhouettes.append(metrics.silhouette_score(self.X, model.labels_ , metric='euclidean',sample_size=self.X.shape[0]))
 
         if self.gen_plot:
-            self.plot(meandist, homogeneity_scores, completeness_scores, rand_scores, silhouettes)
+            self.plot(meandist, homogeneity_scores, completeness_scores, rand_scores, bic, aic)
 
-    def plot(self, meandist, homogeneity, completeness, rand, silhouettes):
+    def plot(self, meandist, homogeneity, completeness, rand, bic, aic):
             # """
             # Plot average distance from observations from the cluster centroid
             # to use the Elbow Method to identify number of clusters to choose
@@ -101,12 +104,22 @@ class ExpectationMaximizationTestCluster():
             plt.title('RAND Score vs. K Clusters')
             plt.show()
 
-            # """
-            # Plot Silhouette Score from observations from the cluster centroid
-            # to use the Elbow Method to identify number of clusters to choose
-            # """
-            # plt.plot(self.clusters, silhouettes)
-            # plt.xlabel('Number of clusters')
-            # plt.ylabel('Silhouette Score')
-            # plt.title('Silhouette Score vs. K Clusters')
-            # plt.show()
+            """
+            Plot BIC Score from observations from the cluster centroid
+            to use the Elbow Method to identify number of clusters to choose
+            """
+            plt.plot(self.clusters, bic)
+            plt.xlabel('Number of clusters')
+            plt.ylabel('BIC Score')
+            plt.title('BIC Score vs. K Clusters')
+            plt.show()
+
+            """
+            Plot AIC Score from observations from the cluster centroid
+            to use the Elbow Method to identify number of clusters to choose
+            """
+            plt.plot(self.clusters, aic)
+            plt.xlabel('Number of clusters')
+            plt.ylabel('AIC Score')
+            plt.title('AIC Score vs. K Clusters')
+            plt.show()
