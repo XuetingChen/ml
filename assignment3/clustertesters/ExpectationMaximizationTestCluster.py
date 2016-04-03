@@ -7,8 +7,7 @@ __date__ = "April 01, 2016"
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn import mixture, metrics
-from scipy.spatial.distance import cdist
+from sklearn import mixture, metrics, decomposition
 
 class ExpectationMaximizationTestCluster():
     def __init__(self, X, y, clusters, plot=False, targetcluster=3, stats=False):
@@ -36,7 +35,7 @@ class ExpectationMaximizationTestCluster():
                 pd_data = pd.DataFrame(nd_data)
                 pd_data.to_csv("cluster.csv", index=False, index_label=False, header=False)
 
-                for i in range (0,3):
+                for i in range (0,self.targetcluster):
                     print "Cluster {}".format(i)
                     cluster = pd_data.loc[pd_data.iloc[:,-2]==i].iloc[:,-2:]
                     print cluster.shape[0]
@@ -53,7 +52,46 @@ class ExpectationMaximizationTestCluster():
             #silhouettes.append(metrics.silhouette_score(self.X, model.labels_ , metric='euclidean',sample_size=self.X.shape[0]))
 
         if self.gen_plot:
+            #self.visualize()
             self.plot(meandist, homogeneity_scores, completeness_scores, rand_scores, bic, aic)
+
+    def visualize(self):
+        """
+        Generate scatter plot of Kmeans with Centroids shown
+        """
+        fig = plt.figure(1)
+        plt.clf()
+        plt.cla()
+
+        X_new = decomposition.pca.PCA(n_components=2).fit_transform(self.X)
+        model = mixture.GMM(n_components=self.targetcluster, covariance_type='full')
+        labels = model.fit_predict(X_new)
+        totz = np.concatenate((X_new,  np.expand_dims(labels, axis=1), np.expand_dims(self.y, axis=1),), axis=1)
+
+        # for each cluster
+        colors = ['red', 'green', 'blue', 'yellow', 'orange', 'purple']
+        fig = plt.figure()
+
+        for clust in range(0, self.targetcluster):
+            totz_clust = totz[totz[:,-2] == clust]
+            print "Cluster Size"
+            print totz_clust.shape
+
+            benign = totz_clust[totz_clust[:,-1] == 1]
+            malignant = totz_clust[totz_clust[:,-1] == 0]
+
+            plt.scatter(benign[:, 0], benign[:, 1],  color=colors[clust], marker=".")
+            plt.scatter(malignant[:, 0], malignant[:, 1],  color=colors[clust], marker="x")
+
+        # centroids = model.
+        # plt.scatter(centroids[:, 0], centroids[:, 1], centroids[:, 2],
+        #     marker='x', s=169, linewidths=3, color="black",
+        #      zorder=10)
+
+        plt.title("Breast Cancer Clustering")
+        plt.xlabel("1st Component")
+        plt.ylabel("2nd Component")
+        plt.show()
 
     def plot(self, meandist, homogeneity, completeness, rand, bic, aic):
             # """
