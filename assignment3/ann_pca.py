@@ -3,12 +3,13 @@ import pylab as pl
 
 from pybrain.datasets import ClassificationDataSet, SupervisedDataSet
 from pybrain.utilities           import percentError
-from sklearn import  datasets, decomposition
+from sklearn import  datasets, decomposition, cluster
 from pybrain.tools.shortcuts     import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.structure.modules   import SoftmaxLayer
 from pybrain.structure.modules   import SigmoidLayer
 import numpy as np
+import time
 
 
 if __name__ == "__main__":
@@ -24,20 +25,19 @@ if __name__ == "__main__":
 
     tstdata, trndata = ds.splitWithProportion(0.3)
 
-    max_epochs = 100
+    max_epochs = 1000
 
     # List all the different networks we want to test
-    net=buildNetwork(trndata.indim,15,trndata.outdim,  bias=True)
+    net=buildNetwork(trndata.indim,15,trndata.outdim, outclass=SigmoidLayer, bias=True)
+    print net
 
     # Setup a trainer that will use backpropogation for training
     trainer = BackpropTrainer(net, dataset=trndata, verbose=True, weightdecay=0.01, momentum=.9)
     train_errors = []
     test_errors = []
 
-    # trainer.trainUntilConvergence(maxEpochs=1000, verbose=True, continueEpochs=10, validationProportion=0.25)
-    # print percentError(trainer.testOnClassData(), trndata['target'])
-    # print percentError(trainer.testOnClassData(dataset=tstdata), tstdata['target'])
     for i in range(max_epochs):
+        start = time.time()
         error = trainer.train()
 
         print "Epoch: %d, Error: %7.4f" % (i, error)
@@ -47,6 +47,7 @@ if __name__ == "__main__":
 
         test_errors.append(trainer.testOnData(tstdata))
         print test_errors[i]
+        print "Elapsed time: {}".format(time.time()-start)
 
     # Plot training and test error as a function of the number of hidden layers
     pl.figure()
