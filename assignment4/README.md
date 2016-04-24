@@ -1,4 +1,4 @@
-###OMSCS 7641 - Machine Learning Assignment 4
+#OMSCS 7641 - Machine Learning Assignment 4
 
 This assignment was completed using the generously made boilerplate source code from @juanjose49 at https://github.com/juanjose49/omscs-cs7641-machine-learning-assignment-4
 
