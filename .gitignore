@@ -9,7 +9,10 @@ assignment1/.idea/*
 assignment2/.idea/*
 assignment2/ABAGAIL/*.txt
 assignment3/.idea/*
-
+assignment3/results/*
+assignment4/.idea/*
+assignment4/results/*
+assignment4/bin/*
 # Sensitive or high-churn files:
 .idea/dataSources.ids
 .idea/dataSources.xml
@@ -129,3 +132,9 @@ assignment2/Optimization_Results/2016-03-13/temp.txt
 assignment2/randomized-optimization.iml
 
 assignment3/figure_1.png
+
+assignment4/build.xml
+
+assignment4/burlap-assignment-4.iml
+
+omscs-cs7641-machine-learning-assignment-4/
