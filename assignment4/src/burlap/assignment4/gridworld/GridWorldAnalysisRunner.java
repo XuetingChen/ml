@@ -25,14 +25,14 @@ import burlap.oomdp.visualizer.Visualizer;
 import java.util.Arrays;
 import java.util.List;
 
-public class AnalysisRunner {
+public class GridWorldAnalysisRunner {
 
 	final SimpleHashableStateFactory hashingFactory = new SimpleHashableStateFactory();
 
 	private int MAX_ITERATIONS;
 	private int NUM_INTERVALS;
 
-	public AnalysisRunner(int MAX_ITERATIONS, int NUM_INTERVALS){
+	public GridWorldAnalysisRunner(int MAX_ITERATIONS, int NUM_INTERVALS){
 		this.MAX_ITERATIONS = MAX_ITERATIONS;
 		this.NUM_INTERVALS = NUM_INTERVALS;
 		

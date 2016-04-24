@@ -62,7 +62,7 @@ public class EasyGridWorldLauncher {
 			visualizeInitialGridWorld(domain, gen, env);
 		}
 		
-		AnalysisRunner runner = new AnalysisRunner(MAX_ITERATIONS,NUM_INTERVALS);
+		GridWorldAnalysisRunner runner = new GridWorldAnalysisRunner(MAX_ITERATIONS,NUM_INTERVALS);
 		if(runValueIteration){
 			runner.runValueIteration(gen,domain,initialState, rf, tf, showValueIterationPolicyMap);
 		}

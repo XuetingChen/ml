@@ -12,13 +12,13 @@ import burlap.oomdp.singleagent.environment.SimulatedEnvironment;
 import burlap.oomdp.singleagent.explorer.VisualExplorer;
 import burlap.oomdp.visualizer.Visualizer;
 
-public class BlockDudeLauncher {
+public class HardBlockDudeLauncher {
 	//These are some boolean variables that affect what will actually get executed
-	private static boolean visualizeInitialBlockWorld = false; //Loads a GUI with the agent, walls, and goal
+	private static boolean visualizeInitialBlockWorld = true; //Loads a GUI with the agent, walls, and goal
 	
 	//runValueIteration, runPolicyIteration, and runQLearning indicate which algorithms will run in the experiment
-	private static boolean runValueIteration = false;
-	private static boolean runPolicyIteration = false;
+	private static boolean runValueIteration = true;
+	private static boolean runPolicyIteration = true;
 	private static boolean runQLearning = true;
 	
 	//showValueIterationPolicyMap, showPolicyIterationPolicyMap, and showQLearningPolicyMap will open a GUI
