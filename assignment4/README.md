@@ -4,8 +4,6 @@ This assignment was completed using the generously made boilerplate source code 
 
 The existing boilerplate included code to run the GridWorld problem. In this assignment I duplicated and modified some of the analysis launchers and runners to the BlockDude program. Execution for both problems are the same. See below for instructions on how to run GridWorld. For BlockDude, execute BlockDudeLauncher. 
 
-Greetings! The purpose of this readme file is to offer the reader the steps required to make use of this BURLAP machine learning package with several of my own custom classes (included) and Eclipse (not included). This readme is split by the different Markov Decision Processes that were required for completion of the assignment. The instructions below will assume that you have already successfully downloaded and opened Eclipse.
-
 ##Running the Grid World: Low Difficulty Analysis:
 
 1. While inside the directory structure burlap-assignment-4/src/burlap/assignment4/gridworld/ right-click on the EasyGridWorldLauncher.
