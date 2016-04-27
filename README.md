@@ -1,5 +1,4 @@
-# ml
-Machine Learning
+# Machine Learning OMSCS 7641
 
 This repository holds assignments completed for OMSCS 7641 Machine Learning Spring 2016. See READMEs in individual assignments for instructions on how to compile and run. 
 
